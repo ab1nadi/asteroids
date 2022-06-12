@@ -1,0 +1,9 @@
+body{
+  display:flex;
+  justify-content: center;
+}
+
+#app
+{
+  border:1px solid black;
+}
