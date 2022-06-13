@@ -109,7 +109,6 @@ export  class Ship
             this.bullets[i].update();
 
 
-        console.log(this.bullets)
     }
 
     // rotates the ship
@@ -258,7 +257,7 @@ export  class Ship
     {
         // only shoot a bullet 
         // every 20th frame
-        if(this.frameCount%20 ==0)
+        if(this.frameCount%15 ==0)
         {
             // build the bullet velocity vector
             let bulletVelocity = this.forceAcceleration.clone();

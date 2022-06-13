@@ -2,7 +2,7 @@ import './style.css'
 
 import Two from 'two.js'
 import {Ship} from './ship.js'
-import { rock } from './rock';
+import { GameManager } from '../gameManager';
 
 
 var params = {
@@ -14,23 +14,28 @@ var params = {
 var elem = document.getElementById("app");
 var two = new Two(params).appendTo(elem);
 
-
+/*
 
 let z = new Ship(two);
 
 
-let r = new rock(two, 30,2);
+let r = new rock(two, 30,2, {x:250, y:250});
+*/
 
 
+let game = new GameManager(two);
+
+
+game.spawnRocks();
 
 // key press stuff
 
 // the controller that holds state
 const controller = {
-  'KeyW': {pressed: false, func: ()=> z.move()},
-  'KeyA': {pressed: false, func: ()=> z.rotateLeft()},
-  'KeyD': {pressed: false, func: ()=> z.rotateRight()},
-  'Space': {pressed: false, func: ()=> z.shoot()}
+  'KeyW': {pressed: false, func: ()=> game.ship.move()},
+  'KeyA': {pressed: false, func: ()=> game.ship.rotateLeft()},
+  'KeyD': {pressed: false, func: ()=> game.ship.rotateRight()},
+  'Space': {pressed: false, func: ()=> game.ship.shoot()}
 }
 
 // set state for the controler with event listeners
@@ -63,8 +68,6 @@ two.play();
 
 function update(frameCount) {
   executeMoves();
-  z.update();
-
-  r.update();
+  game.update();
 }
 

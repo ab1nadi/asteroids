@@ -1,14 +1,16 @@
 import Two from "two.js";
-export  class rock
+export  class Rock
 {
-    constructor(two, radius, velocity)
+    constructor(two, radius, velocity, position)
     {
 
         this.width = two.width;
         this.height = two.height;
 
+        this.radius = radius;
 
-        this.rockObject = two.makePolygon(this.width/2, this.height/2, radius, 9);
+
+        this.rockObject = two.makePolygon(position.x, position.y, radius, 9);
 
         this.velocity = new Two.Vector(0,velocity);
 
@@ -48,15 +50,20 @@ export  class rock
     }
 
 
+    getPosition()
+    {
+        return {x:this.rockObject.position.x, y:this.rockObject.position.y};
+    }
+
 
     // check collision
     // checks if a point
     // intersects this rock
     checkCollision(point)
     {
-        let distnace = Two.Vector.distanceBetween(point, this.rockObject.position);
+        let distance = Two.Vector.distanceBetween(point, this.rockObject.position);
 
-        if(distance <= radius)
+        if(distance <= this.radius)
             return true;
         else 
             return false;
