@@ -13,6 +13,8 @@ export  class Ship
 
         let ship = two.makePolygon(0,0,10,3);
 
+        this.shipP = ship;
+
         let point = two.makeLine(0,0,0,-3);
 
         point.position.y=ship.position.y-10;
@@ -107,6 +109,9 @@ export  class Ship
         // update the bullets
         for(var i = 0; i<this.bullets.length; i++)
             this.bullets[i].update();
+
+
+
 
 
     }
@@ -274,6 +279,18 @@ export  class Ship
             this.bullets.push(b);
         }
 
+    }
+
+    getVertices()
+    {
+        let returned = [];
+       for(let i = 0; i < this.shipP.vertices.length; i++)
+       {
+        returned.push({x:this.shipP.vertices[i]._x+this.shipObject.position.x, y: this.shipP.vertices[i]._y+this.shipObject.position.y})
+       }
+
+
+       return returned;
     }
     
 }

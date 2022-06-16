@@ -2,7 +2,7 @@ import './style.css'
 
 import Two from 'two.js'
 import {Ship} from './ship.js'
-import { GameManager } from '../gameManager';
+import { GameManager } from './gameManager';
 
 
 var params = {

@@ -47,6 +47,8 @@ export  class Rock
 
 
         this.rockObject.rotation +=this.spinStep;
+
+
     }
 
 
