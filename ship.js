@@ -29,7 +29,7 @@ export  class Ship
         this.shipObject = two.makeGroup();
         this.shipObject.add(ship, this.shipFire,point);
         this.shipObject.position.x = two.width/2;
-        this.shipObject.position.y = two.height/2;
+        this.shipObject.position.y = two.height/2-15;
         
 
         // the vector for velocity
@@ -64,6 +64,8 @@ export  class Ship
 
         this.bulletSpeed = 5;
 
+
+        this.doNothing = false;
     }
 
 
@@ -73,6 +75,26 @@ export  class Ship
     adjustAngle(angle)
     {
         this.shipObject.rotation +=angle;
+    }
+
+
+    reposition()
+    {
+        this.shipObject.position.x = this.two.width/2;
+        this.shipObject.position.y = this.two.height/2-15;
+        this.velocity.setLength(0);
+        this.forceAcceleration = new Two.Vector(1,0);
+        this.forceAcceleration.setLength(0.2);
+        this.forceAcceleration.rotate(-Math.PI/2);
+        this.shipObject.rotation = 0;
+        this.shipFire.stroke = "rgb(255,255,255)";
+
+        for(let i = 0; i<this.bullets.length; i++)
+        {
+            this.two.remove(this.bullets[i].bulletObject);
+        }
+
+        this.bullets=[];
     }
 
     update()
@@ -119,9 +141,12 @@ export  class Ship
     // rotates the ship
     rotateLeft()
     {
-        this.shipObject.rotation -= this.rotationStep;
-        this.forceAcceleration.rotate(-this.rotationStep);
 
+        if(!this.doNothing)
+        {
+            this.shipObject.rotation -= this.rotationStep;
+            this.forceAcceleration.rotate(-this.rotationStep);
+        }
 
     }
 
@@ -129,18 +154,22 @@ export  class Ship
     // rotates the ship 
     rotateRight()
     {
-        this.shipObject.rotation += this.rotationStep;
-        this.forceAcceleration.rotate(this.rotationStep);
-
+        if(!this.doNothing)
+        {
+            this.shipObject.rotation += this.rotationStep;
+            this.forceAcceleration.rotate(this.rotationStep);
+        }
     }
 
     // basically applys the moveAcceleration but makes
     // it constant
     move()
     {
+        if(!this.doNothing)
+        {
         this.velocity.add(this.forceAcceleration);
         this.shipFire.stroke = "rgb(255,0,80)";
-
+        }
     }
 
 
@@ -260,6 +289,8 @@ export  class Ship
 
     shoot()
     {
+        if(!this.doNothing)
+        {
         // only shoot a bullet 
         // every 20th frame
         if(this.frameCount%15 ==0)
@@ -278,6 +309,7 @@ export  class Ship
             let b = new Bullet(this.two,bulletPosition,bulletVelocity, this.bullets)
             this.bullets.push(b);
         }
+    }
 
     }
 

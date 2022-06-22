@@ -3,6 +3,22 @@ import { Rock } from "./rock";
 let BIG = 30;
 let MED = 20;
 let SML = 10; 
+
+const START = "start";
+const TRANSITION = "transition";
+const GAMEOVER = "gameOver";
+const WINNER = "winner";
+const GAMEDONE = "gamedone";
+const PLAY = "play";
+const WAIT = "wait";
+
+let stages = [
+    {name: "Stage One", rocks:5, maxSpeed: 2},
+    {name: "Stage Two", rocks:6, maxSpeed: 2.5},
+    {name: "Stage Three", rocks:10, maxSpeed: 3},
+]
+
+
 export class GameManager 
 {
     constructor(two)
@@ -12,36 +28,106 @@ export class GameManager
 
         this.ship = new Ship(two);
 
-
-        this.rockSpeed = 2;
-
-        this.rockCount = 5;
+        this.stage = -1;
 
 
-        this.gameOverText = two.makeText("Game Over", two.width/2, two.height/2)
-        this.gameOverText.visible = false;
+        this.gameText = two.makeText("Game Over", two.width/2, two.height/2)
+        this.gameText.visible = false;
+        this.gameText.size = 20;
 
-        this.gameOver = false;
+        this.pressEnter = two.makeText("Press Enter to continue", two.width/2, two.height/2+20);
+        this.pressEnter.visible = false;
+
+
+        this.gameState = START;
+
+        this.frameCount = 0;
+
     }
 
     update()
     {
        
+        this.frameCount++;
 
-
-        if(!this.gameOver)
+        if(this.gameState == PLAY)
         {
-
+            this.ship.doNothing = false;
+            // check if it is time for a stage change
+            if(this.rocks.length == 0)
+            {
+                this.gameState = TRANSITION;
+            }
+            // update the rocks and ship
+            // and check for collisions
             for(let i = 0; i<this.rocks.length; i++)
             {
                 this.rocks[i].update();
             }
-        this.ship.update();
+            this.ship.update();
+            this.checkBulletCollision();
+            this.checkShipCollision();
+        }
+        else if(this.gameState == START)
+        {
 
+            // position the ship 
+            this.ship.reposition();
 
-        this.checkBulletCollision();
+            // set the stage to -1
+            this.stage = -1;
 
-        this.checkShipCollision();
+            // go to the next gameState
+            this.gameState = TRANSITION;
+        }
+        else if(this.gameState == TRANSITION)
+        {
+            this.stage++;
+            // check if the player won
+            if(this.stage == stages.length)
+            {
+                this.gameState = WINNER;
+            }
+            // otherwise spawn some rocks
+            // with the correct stuff for that stage
+            else 
+            {
+                // spawn the rocks
+                this.spawnRocks(stages[this.stage].rocks, stages[this.stage].maxSpeed)
+                // set the text to the current stage text
+                this.gameText.value = stages[this.stage].name ;
+                this.gameText.visible = true;
+                this.pressEnter.visible = true;
+            }
+
+            // go to the wait 
+            this.gameState = WAIT;
+            
+        }
+        else if(this.gameState == WINNER)
+        {
+            // empty the rocks
+            this.emptyRocks();
+
+            this.gameText.value = "You Won!"
+            this.gameText.visible = true;
+            this.pressEnter.visible = true;
+            this.gameState = GAMEDONE;
+        }
+        else if(this.gameState == GAMEOVER)
+        {
+
+                        // empty the rocks
+                        this.emptyRocks();
+
+            this.gameText.value = "You Lost!";
+            this.gameText.visible = true;
+            this.pressEnter.visible = true;
+            this.gameState = GAMEDONE;
+        }
+        else if(this.gameState == WAIT|| this.gameState == GAMEDONE)
+        {
+            this.ship.doNothing=true;
         }
 
         
@@ -49,15 +135,15 @@ export class GameManager
      
     }
 
-    spawnRocks()
+    spawnRocks(number, maxSpeed)
     {
-        for(let i = 0; i<this.rockCount; i++ )
+        for(let i = 0; i<number; i++ )
         {
             // random x random y
             let x =  Math.floor(Math.random() * this.two.width);
             let y = Math.floor(Math.random() * this.two.height);
 
-            this.rocks.push(new Rock(this.two, BIG, this.rockSpeed, {x:x,y:y}))
+            this.rocks.push(new Rock(this.two, BIG, maxSpeed, {x:x,y:y}))
         }
     }
 
@@ -103,8 +189,7 @@ export class GameManager
                  if(this.rocks[r].checkCollision(v[i]))
                  {
                    
-                    this.gameOver = true;
-                    this.gameOverText.visible = true;
+                    this.gameState = GAMEOVER;
 
                      break;
                  }
@@ -112,9 +197,6 @@ export class GameManager
          }
 
     }
-
-
-
 
     breakRockApart(rock)
     {
@@ -126,18 +208,53 @@ export class GameManager
             {
                 // create two medium rocks with the same position and 
 
-                this.rocks.push(new Rock(this.two, MED, this.rockSpeed, rock.getPosition()))
-                this.rocks.push(new Rock(this.two, MED,this.rockSpeed, rock.getPosition()));
+                this.rocks.push(new Rock(this.two, MED, stages[this.stage].maxSpeed, rock.getPosition()))
+                this.rocks.push(new Rock(this.two, MED,stages[this.stage].maxSpeed, rock.getPosition()));
 
             }
             else if(rock.radius == MED)
             {
                 // create two medium rocks with the same position and 
-                this.rocks.push(new Rock(this.two, SML,this.rockSpeed, rock.getPosition()))
-                this.rocks.push(new Rock(this.two, SML,this.rockSpeed, rock.getPosition()));
+                this.rocks.push(new Rock(this.two, SML,stages[this.stage].maxSpeed, rock.getPosition()))
+                this.rocks.push(new Rock(this.two, SML,stages[this.stage].maxSpeed, rock.getPosition()));
             }
 
 
 
     }
+
+    emptyRocks()
+    {
+        for(let i = 0; i<this.rocks.length ;i++)
+        {
+            this.two.remove(this.rocks[i].rockObject);
+        }
+        
+        
+
+        this.rocks = [];
+    }
+
+
+    doneWaitingOrNextGame()
+    {
+        if(this.frameCount %5==0)
+        {
+            if(this.gameState == WAIT)
+            {
+                this.gameText.visible = false;
+                this.pressEnter.visible = false;
+                this.gameState=PLAY;
+            }
+            else if(this.gameState == GAMEDONE)
+            {
+                this.gameText.visible = false;
+                this.pressEnter.visible = false;
+                this.gameState = START;
+            }
+     }
+
+        console.log("got called");
+    }
+
 }

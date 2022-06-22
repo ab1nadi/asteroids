@@ -35,11 +35,14 @@ const controller = {
   'KeyW': {pressed: false, func: ()=> game.ship.move()},
   'KeyA': {pressed: false, func: ()=> game.ship.rotateLeft()},
   'KeyD': {pressed: false, func: ()=> game.ship.rotateRight()},
-  'Space': {pressed: false, func: ()=> game.ship.shoot()}
+  'Space': {pressed: false, func: ()=> game.ship.shoot()},
+
+  'Enter': {pressed: false, func: ()=> game.doneWaitingOrNextGame()}
 }
 
 // set state for the controler with event listeners
 document.addEventListener("keydown", (e) => {
+  console.log(e.code)
   if(controller[e.code]){
     controller[e.code].pressed = true
   }
