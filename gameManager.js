@@ -19,7 +19,7 @@ const WAIT = "wait";
 
 // stages for the game
 let stages = [
-    {name: "Stage One", rocks:8, maxSpeed: 2},
+    {name: "Stage One", rocks:1, maxSpeed: 2},
     {name: "Stage Two", rocks:10, maxSpeed: 2.5},
     {name: "Stage Three", rocks:15, maxSpeed: 3},
 ]
@@ -37,17 +37,25 @@ export class GameManager
         this.two = two;
         this.rocks = [];
 
+        this.background =  two.makeRectangle(two.width/2, two.height/2, two.width, two.height);
+        this.background.fill = "rgb(0,0,0)"
+
         this.ship = new Ship(two);
 
         this.stage = -1;
 
+        // make the background
+      
 
         this.gameText = two.makeText("Game Over", two.width/2, two.height/2)
         this.gameText.visible = false;
         this.gameText.size = 20;
+        this.gameText.fill = "rgb(255,255,255)"
 
         this.pressEnter = two.makeText("Press Enter to continue", two.width/2, two.height/2+20);
         this.pressEnter.visible = false;
+        this.pressEnter.fill = "rgb(255,255,255)"
+
 
 
         this.gameState = START;
@@ -302,6 +310,7 @@ export class GameManager
                 // create two medium rocks with the same position and 
 
                 this.rocks.push(new Rock(this.two, MED, stages[this.stage].maxSpeed, rock.getPosition()))
+                this.rocks.push(new Rock(this.two, MED,stages[this.stage].maxSpeed, rock.getPosition()));
                 this.rocks.push(new Rock(this.two, MED,stages[this.stage].maxSpeed, rock.getPosition()));
 
             }

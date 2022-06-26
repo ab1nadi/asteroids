@@ -12,23 +12,30 @@ export  class Ship
         this.height = two.height;
 
 
-        let ship = two.makePolygon(0,0,10,3);
+        this.shipP = two.makePolygon(0,0,10,3);
+        this.shipP ._fill = "rgb(0,0,0)";
+        this.shipP .stroke = "rgb(255,255,255)"
+        
 
-        this.shipP = ship;
+
 
         let point = two.makeLine(0,0,0,-3);
 
-        point.position.y=ship.position.y-10;
+        point.stroke = "rgb(255,255,255)"
+        point.position.y=this.shipP .position.y-10;
 
-        this.shipFire = two.makePolygon(ship.position.x,ship.position.y+9,5,3);
+        this.shipFire = two.makePolygon(this.shipP.position.x,this.shipP .position.y+9,5,3);
         this.shipFire.rotation = Math.PI;
-        this.shipFire.stroke = "rgb(255,255,255)"
+        this.shipFire.stroke = "rgb(0,0,0)"
+        this.shipFire.fill= "rgb(0,0,0)"
+
+
 
         this.showFire = false;
 
         // add the ship and the fire to a group
         this.shipObject = two.makeGroup();
-        this.shipObject.add(ship, this.shipFire,point);
+        this.shipObject.add(this.shipP , this.shipFire,point);
         this.shipObject.position.x = two.width/2;
         this.shipObject.position.y = two.height/2-15;
         
@@ -63,7 +70,7 @@ export  class Ship
 
         this.bullets = [];
 
-        this.bulletSpeed = 5;
+        this.bulletSpeed = 8;
 
 
         this.doNothing = false;
@@ -90,8 +97,8 @@ export  class Ship
         this.forceAcceleration.setLength(0.2);
         this.forceAcceleration.rotate(-Math.PI/2);
         this.shipObject.rotation = 0;
-        this.shipFire.stroke = "rgb(255,255,255)";
-
+        this.shipFire.stroke = "rgb(0,0,0)"
+        this.shipFire.fill= "rgb(0,0,0)"
         for(let i = 0; i<this.bullets.length; i++)
         {
             this.two.remove(this.bullets[i].bulletObject);
@@ -127,7 +134,11 @@ export  class Ship
         // every 8 frames lets turn the fire off and on 
         // for flickering and so it turns off
         if(this.frameCount%8 == 0)
-            this.shipFire.stroke = "rgb(255,255,255)";
+            {
+                this.shipFire.stroke = "rgb(0,0,0)";
+                this.shipFire.fill = "rgb(0,0,0)";
+                
+        }
 
         
         this.borderCalc();
@@ -171,6 +182,7 @@ export  class Ship
         {
         this.velocity.add(this.forceAcceleration);
         this.shipFire.stroke = "rgb(255,0,80)";
+        this.shipFire.fill = "rgb(255,0,80)";
         }
     }
 

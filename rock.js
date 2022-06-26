@@ -16,6 +16,9 @@ export  class Rock
 
         this.rockObject = two.makePolygon(position.x, position.y, radius, 9);
 
+        this.rockObject.fill = "rgb(0,0,0)"
+        this.rockObject.stroke = "rgb(255,255,255)"
+
         this.velocity = new Two.Vector(0,velocity);
 
 
