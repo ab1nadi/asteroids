@@ -1,76 +1,38 @@
 import './style.css'
 
 import Two from 'two.js'
-import {Ship} from './ship.js'
 import { GameManager } from './gameManager';
-
+import { InputController } from './inputController';
 
 var params = {
-  height:500,
-  width: 500,
+  height:800,
+  width: 800,
 };
 
-
+// init the variables
 var elem = document.getElementById("app");
 var two = new Two(params).appendTo(elem);
-
-/*
-
-let z = new Ship(two);
-
-
-let r = new rock(two, 30,2, {x:250, y:250});
-*/
-
-
 let game = new GameManager(two);
+let controller = new InputController(two);
 
 
-game.spawnRocks();
+// give the inputcontroller the control functions 
+controller.addInput('KeyA', ()=>game.ship.rotateLeft());
+controller.addInput('KeyD', ()=>game.ship.rotateRight());
+controller.addInput('KeyW', ()=>game.ship.move());
+controller.addInput('Space', ()=>game.ship.shoot());
+controller.addInput('Enter', ()=>game.doneWaitingOrNextGame());
 
-// key press stuff
-
-// the controller that holds state
-const controller = {
-  'KeyW': {pressed: false, func: ()=> game.ship.move()},
-  'KeyA': {pressed: false, func: ()=> game.ship.rotateLeft()},
-  'KeyD': {pressed: false, func: ()=> game.ship.rotateRight()},
-  'Space': {pressed: false, func: ()=> game.ship.shoot()},
-
-  'Enter': {pressed: false, func: ()=> game.doneWaitingOrNextGame()}
-}
-
-// set state for the controler with event listeners
-document.addEventListener("keydown", (e) => {
-  console.log(e.code)
-  if(controller[e.code]){
-    controller[e.code].pressed = true
-  }
-})
-document.addEventListener("keyup", (e) => {
-  if(controller[e.code]){
-    controller[e.code].pressed = false
-  }
-})
-
-// executes the moves
-// for the controller state
-const executeMoves = () => {
-  Object.keys(controller).forEach(key=> {
-    controller[key].pressed && controller[key].func()
-  })
-}
-
-
-
-
-
+// bind the update function
 two.bind('update', update);
 // Finally, start the animation loop
 two.play();
 
+
+// update is called on every frame
 function update(frameCount) {
-  executeMoves();
+  
+  controller.executeInputs();
   game.update();
 }
 

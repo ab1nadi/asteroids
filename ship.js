@@ -1,7 +1,8 @@
 import Two from "two.js";
 import { Bullet } from "./bullet";
 
-
+// the ship class
+// handles the data pertaining ato a ship
 export  class Ship
 {
     constructor(two)
@@ -78,6 +79,8 @@ export  class Ship
     }
 
 
+    // basically resets
+    // the ship if you lose
     reposition()
     {
         this.shipObject.position.x = this.two.width/2;
@@ -97,8 +100,11 @@ export  class Ship
         this.bullets=[];
     }
 
+
+    // where the animations happen 
     update()
     {
+        console.log(this.bullets)
         // pretty much no matter what we want
         // the objects velocity added to the position
         this.shipObject.position.add(this.velocity);
@@ -134,20 +140,16 @@ export  class Ship
 
 
 
-
-
     }
 
     // rotates the ship
     rotateLeft()
     {
-
         if(!this.doNothing)
         {
             this.shipObject.rotation -= this.rotationStep;
             this.forceAcceleration.rotate(-this.rotationStep);
         }
-
     }
 
 
@@ -287,13 +289,14 @@ export  class Ship
 
     }
 
+    // shoot a bullet
     shoot()
     {
         if(!this.doNothing)
         {
         // only shoot a bullet 
         // every 20th frame
-        if(this.frameCount%15 ==0)
+        if(this.frameCount%20 ==0)
         {
             // build the bullet velocity vector
             let bulletVelocity = this.forceAcceleration.clone();
@@ -313,6 +316,9 @@ export  class Ship
 
     }
 
+    // returns the vertices
+    // for calculation 
+    // of collisions with rocks
     getVertices()
     {
         let returned = [];

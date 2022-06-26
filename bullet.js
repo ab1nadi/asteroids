@@ -1,5 +1,6 @@
 import Two from "two.js";
 
+// the bullet class
 export class Bullet{
 
     constructor(two, position, velocity, holder)

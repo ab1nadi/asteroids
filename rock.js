@@ -1,4 +1,8 @@
 import Two from "two.js";
+// the rock class
+// does everything that 
+// a rock should do in a two.js
+// canvas
 export  class Rock
 {
     constructor(two, radius, velocity, position)
@@ -31,7 +35,9 @@ export  class Rock
     }
 
 
-
+    // the update function 
+    // for the rock
+    // this is where the animations happen
     update()
     {
         this.rockObject.position.add(this.velocity)
@@ -44,14 +50,12 @@ export  class Rock
         if(this.frameCount%10)
             this.velocity.rotate(this.rotationStep);
 
-
-
         this.rockObject.rotation +=this.spinStep;
-
 
     }
 
-
+    // returns the position of 
+    // the rock
     getPosition()
     {
         return {x:this.rockObject.position.x, y:this.rockObject.position.y};
@@ -83,19 +87,21 @@ export  class Rock
         p2.setLength(10);  
         p2.add(p1);
 
+        let dist = this.radius;
+
         let slope = (p1.y-p2.y)/(p1.x-p2.x);
 
         let intercept = p1.y-(slope*p1.x);
 
 
-        let top = (-5-intercept)/slope;
+        let top = (-dist-intercept)/slope;
 
-        let bottom = (this.height+5-intercept)/slope;
+        let bottom = (this.height+dist-intercept)/slope;
 
 
-        let left = slope*(-5)+intercept;
+        let left = slope*(-dist)+intercept;
 
-        let right = slope*(this.width+5)+intercept;
+        let right = slope*(this.width+dist)+intercept;
 
 
         if(top > this.width || top <0)
@@ -108,82 +114,82 @@ export  class Rock
             right = null;
 
 
-        if(p1.x > this.width+5)
+        if(p1.x > this.width+dist)
         {
 
             if(top)
             {
                 this.rockObject.position.x = top;
-                this.rockObject.positiony = -5;
+                this.rockObject.positiony = -dist;
             }
             else if(left)
             {
-                this.rockObject.position.x = -5;
+                this.rockObject.position.x = -dist;
                 this.rockObject.position.y = left;
             }
             else if(bottom)
             {
                 this.rockObject.position.x = bottom;
-                this.rockObject.position.y = this.height+5;
+                this.rockObject.position.y = this.height+dist;
             }
         } 
-        else if(p1.x < -5)
+        else if(p1.x < -dist)
         {
             
 
             if(top)
             {
                 this.rockObject.position.x = top;
-                this.rockObject.position.y = -5;
+                this.rockObject.position.y = -dist;
             }
             else if(right)
             {
-                this.rockObject.position.x = this.width+5;
+                this.rockObject.position.x = this.width+dist;
                 this.rockObject.position.y = right;
             }
             else if(bottom)
             {
                 this.rockObject.position.x = bottom;
-                this.rockObject.position.y = this.height+5;
+                this.rockObject.position.y = this.height+dist;
             }
         }
-        else if(p1.y > this.height+5)
+        else if(p1.y > this.height+dist)
         {
          
 
             if(left)
             {
-                this.rockObject.position.x = -5;
+                this.rockObject.position.x = -dist;
                 this.rockObject.position.y = left;
             }
             else if(top)
             {
                 this.rockObject.position.x = top;
-                this.rockObject.position.y = -5;
+                this.rockObject.position.y = -dist;
             }
             else if(right)
             {
-                this.rockObject.position.x = this.width+5;
+                this.rockObject.position.x = this.width+dist;
                 this.rockObject.position.y = right;
             }
         }
-        else if(p1.y <-5)
+        else if(p1.y <-dist)
         {
             
 
             if(left)
             {
-                this.rockObject.position.x = -5;
+                this.rockObject.position.x = -dist;
                 this.rockObject.position.y = left;
             }
             else if(bottom)
             {
                 this.rockObject.position.x = bottom;
-                this.rockObject.position.y = this.width+5;
+                this.rockObject.position.y = this.width+dist;
             }
             else if(right)
             {
-                this.rockObject.position.x = this.width+5;
+                this.rockObject.position.x = this.width+dist;
                 this.rockObject.position.y = right;
             }
             
