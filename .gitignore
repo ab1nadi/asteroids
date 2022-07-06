@@ -8,8 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
-dist-ssr
+#dist I want to host it from dist on github
+#dist-ssr
 *.local
 
 # Editor directories and files
