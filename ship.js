@@ -46,7 +46,7 @@ export  class Ship
 
         // the force that is applied when the ship moves
         this.forceAcceleration = new Two.Vector(1,0);
-        this.forceAcceleration.setLength(0.2);
+        this.forceAcceleration.setLength(0.3);
         this.forceAcceleration.rotate(-Math.PI/2);
 
         // tells it weather or not to apply the force
