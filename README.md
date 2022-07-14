@@ -1,6 +1,7 @@
 # asteroids
 
 A demo of Asteroids the video game built with two.js and the vitejs bundler. 
+Give the game a shot at https://ab1nadi.github.io/asteroids/
 
 # Building the project
 * Clone the project
