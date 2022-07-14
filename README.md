@@ -3,7 +3,6 @@
 A demo of Asteroids the video game built with two.js and the vitejs bundler. 
 
 # Building the project
-# Building the project
 * Clone the project
 * In the command prompt:  
   * cd directory/project/is/in
