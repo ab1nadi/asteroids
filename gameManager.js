@@ -19,9 +19,9 @@ const WAIT = "wait";
 
 // stages for the game
 let stages = [
-    {name: "Stage One", rocks:1, maxSpeed: 2},
-    {name: "Stage Two", rocks:10, maxSpeed: 2.5},
-    {name: "Stage Three", rocks:15, maxSpeed: 3},
+    {name: "Stage One", rocks:5, maxSpeed: 2},
+    {name: "Stage Two", rocks:8, maxSpeed: 2.5},
+    {name: "Stage Three", rocks:10, maxSpeed: 3},
 ]
 
 
