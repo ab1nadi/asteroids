@@ -2,28 +2,33 @@ import Two from "two.js";
 import { Bullet } from "./bullet";
 
 // the ship class
-// handles the data pertaining ato a ship
+// does all the stuff
+// that a two js ship should do
+// updating the position and checking collissions
 export  class Ship
 {
     constructor(two)
     {
+        // gives us the width
+        // and the actual two object
+        // so that the ship has access to this stuff
         this.two = two;
         this.width = two.width;
         this.height = two.height;
 
-
+        // the ship
         this.shipP = two.makePolygon(0,0,10,3);
         this.shipP ._fill = "rgb(0,0,0)";
         this.shipP .stroke = "rgb(255,255,255)"
         
 
 
-
         let point = two.makeLine(0,0,0,-3);
-
         point.stroke = "rgb(255,255,255)"
         point.position.y=this.shipP .position.y-10;
 
+
+        // the fire behind the ship
         this.shipFire = two.makePolygon(this.shipP.position.x,this.shipP .position.y+9,5,3);
         this.shipFire.rotation = Math.PI;
         this.shipFire.stroke = "rgb(0,0,0)"
@@ -67,27 +72,26 @@ export  class Ship
 
         this.frameCount = 0;
 
-
         this.bullets = [];
 
         this.bulletSpeed = 8;
-
 
         this.doNothing = false;
     }
 
 
-    //adjustAngle
+    // adjustAngle
     // adds to the angle
-    // doesnt set the angle
+    // doesn't set the angle
     adjustAngle(angle)
     {
         this.shipObject.rotation +=angle;
     }
 
 
-    // basically resets
-    // the ship if you lose
+    // repostion
+    // resets the ship
+    // to the center if you lose
     reposition()
     {
         this.shipObject.position.x = this.two.width/2;
@@ -99,6 +103,7 @@ export  class Ship
         this.shipObject.rotation = 0;
         this.shipFire.stroke = "rgb(0,0,0)"
         this.shipFire.fill= "rgb(0,0,0)"
+
         for(let i = 0; i<this.bullets.length; i++)
         {
             this.two.remove(this.bullets[i].bulletObject);
@@ -108,10 +113,11 @@ export  class Ship
     }
 
 
-    // where the animations happen 
+    // updates the ships
+    // position 
+    // and other stuff
     update()
     {
-        console.log(this.bullets)
         // pretty much no matter what we want
         // the objects velocity added to the position
         this.shipObject.position.add(this.velocity);
@@ -153,7 +159,8 @@ export  class Ship
 
     }
 
-    // rotates the ship
+
+    // rotates the ship left
     rotateLeft()
     {
         if(!this.doNothing)
@@ -164,7 +171,7 @@ export  class Ship
     }
 
 
-    // rotates the ship 
+    // rotates the ship right
     rotateRight()
     {
         if(!this.doNothing)
@@ -187,8 +194,11 @@ export  class Ship
     }
 
 
-    // if its gone off the border
-    // lets have it comeout directly opposite
+    // borderCalc
+    // essentially this
+    // adjusts the ships position to 
+    // the opposite side of the screen
+    // when it crosses the border
     borderCalc()
     {
         let p1 = this.shipObject.position.clone();
@@ -220,11 +230,6 @@ export  class Ship
             left = null;
         if(right > this.height || right < 0)
             right = null;
-
-
-        
-
-
 
         if(p1.x > this.width+5)
         {

@@ -1,8 +1,9 @@
 import Two from "two.js";
+
 // the rock class
 // does everything that 
 // a rock should do in a two.js
-// canvas
+// canvas, loading, updating, and other stuff
 export  class Rock
 {
     constructor(two, radius, velocity, position)
@@ -79,9 +80,10 @@ export  class Rock
     }
 
 
-
-     // if its gone off the border
-    // lets have it comeout directly opposite
+    // borderCal
+    // essentially if a rock crosses the border
+    // this function throws it to the other side of the
+    // border so that it doesn't just disappear into the abyss
     borderCalc()
     {
         let p1 = this.rockObject.position.clone();
@@ -196,5 +198,5 @@ export  class Rock
                 this.rockObject.position.y = right;
             }
             
-        }}
+    }}
 }

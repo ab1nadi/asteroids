@@ -1,8 +1,7 @@
 import './style.css'
-
 import Two from 'two.js'
-import { GameManager } from './gameManager';
-import { InputController } from './inputController';
+import { GameManager } from './src/gameManager';
+import { InputController } from './src/inputController';
 
 var params = {
   height:600,
@@ -31,7 +30,6 @@ two.play();
 
 // update is called on every frame
 function update(frameCount) {
-  
   controller.executeInputs();
   game.update();
 }

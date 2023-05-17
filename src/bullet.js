@@ -35,7 +35,8 @@ export class Bullet{
 
 
     // checks if the bullet has
-    // gone pst the border
+    // gone past the border
+    // deletes it if it has
     borderCalc()
     {
         let p = this.bulletObject.position;

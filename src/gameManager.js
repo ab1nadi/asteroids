@@ -1,6 +1,10 @@
 import { Ship } from "./ship";
 import { Rock } from "./rock";
 
+// this file manages
+// all the game state
+// for stages and ships and stuffs
+
 // rock sizes
 let BIG = 50;
 let MED = 30;
@@ -56,8 +60,6 @@ export class GameManager
         this.pressEnter.visible = false;
         this.pressEnter.fill = "rgb(255,255,255)"
 
-
-
         this.gameState = START;
 
         this.frameCount = 0;
@@ -71,11 +73,6 @@ export class GameManager
         this.currentTime = 0;   // a running millisecond counter
                                 // that is updated in the background
         
-        
-
-
-        
-
     }
 
 
